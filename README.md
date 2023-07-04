@@ -34,3 +34,4 @@ This API contains the information about the Albums, songs and artists.
 ```
 
 ### Project Execution Flow
+Extract data from API  --> Lambda Trigger (every 1 hour) --> Run extract code --> Store Raw data --> Trigger Transform function --> Transform the data and load it to s3 --> Glue crawler to create the data catalogs on s3 --> Query using Athena
