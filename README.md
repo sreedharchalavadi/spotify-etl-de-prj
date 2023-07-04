@@ -1,1 +1,1 @@
-# spotify-end-to-end-de
+# spotify-end-to-end-dataengineering-project
