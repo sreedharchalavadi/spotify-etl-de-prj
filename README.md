@@ -5,3 +5,32 @@ In this project we will build an ETL(Extract Transform Load) pipeline using the 
 
 ### Architecture
 ![Architecture diagram](https://github.com/sreedharchalavadi/spotify-etl-de-prj/blob/main/spotify_de_architecture_diagram.png)
+
+### About Dataset API
+This API contains the information about the Albums, songs and artists.
+[Spotify API Documentation](https://developer.spotify.com/documentation/web-api)
+
+### Services used
+1. **S3 (Simple Storage Service) :** Its an
+   
+2. **AWS Lambda :**
+
+3. **Cloud Watch :**
+
+4. **Glue Crawler :**
+
+5. **Data  Catalog :** 
+
+6. **Amazon Athena : **
+
+### Installed Packages
+
+```
+!pip install spotipy
+!pip install pandas
+!pip install numpy
+!pip install bs4
+!pip install requests
+```
+
+### Project Execution Flow
