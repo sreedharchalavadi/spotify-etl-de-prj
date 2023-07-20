@@ -64,7 +64,7 @@ Every week we need to extract the top global songs to understand what kind of so
     songs_data
     artists_data
 
-    --> Move the data from processed folder and delete from the to_be_processed/ folder.
+    --> Move the raw data from the to_be_processed/  to the processed folder.
     This can be done by copying the data to the processed folder and delete from the to_be_processed/ folder.
     lambda function : spotify_transformation_load_function
 
