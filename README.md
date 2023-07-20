@@ -33,3 +33,51 @@ This API contains the information about the Albums, songs and artists.
 
 ### Project Execution Flow
 Extract data from API  --> Lambda Trigger (every 1 hour) --> Run extract code --> Store Raw data --> Trigger Transform function --> Transform the data and load it to s3 --> Glue crawler to create the data catalogs on s3 --> Query using Athena
+
+#### Steps Executed
+Every week we need to extract the top global songs to understand what kind of songs are trending. Extracted data from spotify api using python.
+
+1. Register our application in spotify api for the data sources, get the client id and the secret key. Used the package spotipy to extract data from spotify api. 
+
+2. Created the buckets and folders as follows.
+    Bucket : sree-spotify-etl-project
+    raw    : sree-spotify-etl-project/raw_data/to_be_processed/
+    		     sree-spotify-etl-project/raw_data/processed/
+		 
+    Transformed folders : sree-spotify-etl-project/transformed_data/album_data
+                          sree-spotify-etl-project/transformed_data/songs_data
+                          sree-spotify-etl-project/transformed_data/artists_data
+					  
+3. Deployed the code to the aws lambda , so that it will extract data from the spotify api. We have used the spotipy layer in lambda to read data from spotify api. Added the cloud watch trigger to run the code on daily basis, This will extract the data and store it in s3.
+
+    lambda function : spotify_api_data_extract.
+    The above data is stored as it is in the raw folder 
+    Folder : sree-spotify-etl-project/raw_data/to_be_processed/
+
+4. Created one more lambda function. Whenver there is a data in the raw folder of s3. We will trigger this transformation code, in this code following things will be performed.
+
+    --> created 3 functions to extract the album_data,songs_data and artists_data in a 3 lists.
+    --> Converted these 3 lists into dataframes.
+    --> All these dataframes are stored in the csv format and stored in the following folders respectively
+    sree-spotify-etl-project/transformed_data/
+    album_data
+    songs_data
+    artists_data
+
+    --> Move the data from processed folder and delete from the to_be_processed/ folder.
+    This can be done by copying the data to the processed folder and delete from the to_be_processed/ folder.
+    lambda function : spotify_transformation_load_function
+
+5. Once we have data in transformed folder in s3, we will create the 3 glue crawler job to create the the glue catalog tables on top of this folders. We can query this data using Athena. 
+
+    spotify_album_crawler
+    spotify_artist_crawler
+    spotify_song_crawler
+
+6. Data analysis quries in athena.
+    SELECT count(*) FROM "spotify_db"."album_data" limit 10;
+    select name, sum(total_tracks) FROM "spotify_db"."album_data" group by name order by sum("total_tracks") desc;
+    SELECT count(*) FROM "spotify_db"."artist_data" limit 10;
+    SELECT count(*) FROM "spotify_db"."songs_data" limit 10;
+
+
